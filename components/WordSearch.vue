@@ -21,7 +21,7 @@
         </v-btn>
       </v-col>
     </v-row>
-    <v-row v-if="wasSearchSuccessful">
+    <v-row v-if="wasSearchSuccessful && !isLoading">
       <v-col
         v-for="(result, idx) in getResults"
         :key="idx"
@@ -42,12 +42,19 @@
       </v-card>
       </v-col>
     </v-row>
-    <v-row v-else>
+    <v-row v-else-if="!wasSearchSuccessful && !isLoading && query">
       <p class="text-body-1">
-        We were unable to find any definitions for word "{{ word }}". If you know about it, 
+        We were unable to find any definitions for word "{{ query }}". If you know about it, 
         <NuxtLink to="/contact">send us a message</NuxtLink> 
         🖤
       </p>
+    </v-row>
+    <v-row v-else-if="isLoading">
+      <v-skeleton-loader
+        elevation="2"
+        type="article, actions"
+        min-width="300px"
+      ></v-skeleton-loader>
     </v-row>
   </v-container>
 </template>
@@ -65,17 +72,19 @@
     data() {
       return {
         word: '',
+        query: '',
       };
     },
     async fetch() {
       await this.fetchMeanings('example');
     },
     computed: {
-      ...mapGetters(['getResults', 'wasSearchSuccessful']),
+      ...mapGetters(['getResults', 'wasSearchSuccessful', 'isLoading']),
     },
     methods: {
       ...mapActions(['fetchMeanings']),
       triggerSearch() {
+        this.query = this.word;
         debouncedSearch.call(this);
       },
     }

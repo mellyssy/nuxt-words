@@ -4,5 +4,8 @@ export default {
   },
   setSearchSuccess(state, v) {
     state.wasSearchSuccessful = v;
+  },
+  setLoading(state, v) {
+    state.isLoading = v;
   }
 };
