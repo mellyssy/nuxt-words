@@ -12,10 +12,11 @@
           solo
           label="e.g. example"
           clearable
+          @keyup.enter="triggerSearch"
         />
       </v-col>
       <v-col md="1">
-        <v-btn plain height="48" @click="onSearchClick">
+        <v-btn plain height="48" @click="triggerSearch">
           Search
         </v-btn>
       </v-col>
@@ -53,6 +54,11 @@
 
 <script>
   import { mapActions, mapGetters } from 'vuex';
+  import utils from '~/utils';
+
+  const debouncedSearch = utils.debounce(function() {
+    this.fetchMeanings(this.word);
+  }, 300);
 
   export default {
     name: 'WordSearch',
@@ -69,8 +75,8 @@
     },
     methods: {
       ...mapActions(['fetchMeanings']),
-      onSearchClick() {
-        this.fetchMeanings(this.word);
+      triggerSearch() {
+        debouncedSearch.call(this);
       },
     }
   }

@@ -8,7 +8,7 @@
         class="text-center"
         >
           <v-card-text class="text-body-1 py-10">
-            <NuxtLink to="/contact">
+            <NuxtLink to="/contact" class="footer-link">
               Ideas? Suggestions? Shoot us a message.
             </NuxtLink>
           </v-card-text>
@@ -21,3 +21,9 @@
       </v-card>
   </v-container>
 </template>
+
+<style scoped>
+  .footer-link {
+    color: white;
+  }
+</style>
